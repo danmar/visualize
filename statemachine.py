@@ -5,16 +5,9 @@ import sys
 DEBUG = False
 
 def statemachine(filename):
-    s = filename
-    if s.find('\\')>0:
-        s = s[s.rfind('\\')+1:]
-    if s.find('/')>0:
-        s = s[s.rfind('/')+1:]
-    if s.find('.')>0:
-        s = s[:s.find('.')]
-    print('digraph ' + s + ' {')
-
     commentpattern = '\\s+\\/\\*(.+)\\*\\/'
+
+    smc = 1
 
     statevar = None
     casestate = 3
@@ -35,6 +28,20 @@ def statemachine(filename):
         res = re.match('\\s+switch\\s*\\(([a-zA-Z0-9_]+)\\)', line)
         if res:
             statevar = res.group(1)
+
+            if smc > 1:
+                print('}')
+                print('')
+
+            s = filename
+            if s.find('\\')>=0:
+                s = s[s.rfind('\\')+1:]
+            if s.find('/')>=0:
+                s = s[s.rfind('/')+1:]
+            if s.find('.')>0:
+                s = s[:s.find('.')]
+            print('digraph ' + s + str(smc) + ' {')
+            smc = smc + 1
 
         # case
         res = re.match('\\s+case\\s+([a-zA-Z0-9_]+):', line)
