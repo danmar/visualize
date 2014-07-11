@@ -1,0 +1,6 @@
+digraph sm1 {
+  START -> PLUSMINUS;
+  START -> DIGIT;
+  PLUSMINUS -> DIGIT;
+  DIGIT -> DIGIT;
+}
